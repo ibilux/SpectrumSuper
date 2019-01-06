@@ -17,7 +17,7 @@ public class ProfileTile extends TileService {
 
     private static final String SERVICE_STATUS_FLAG = "serviceStatus";
     private static final String PREFERENCES_KEY = "org.frap129.spectrum";
-    private boolean click = false;
+    private boolean click = true;
 
     @Override
     public void onStartListening() {
@@ -74,7 +74,7 @@ public class ProfileTile extends TileService {
         if (profile.contains("performance") && !disabledProfilesList.contains(profile)){
             newLabel = "Performance";
             newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.rocket);
-            click = true;
+            click = false;
         } else if (profile.contains("balanced") && !disabledProfilesList.contains(profile)) {
             newLabel = "Balance";
             newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.atom);
