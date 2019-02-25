@@ -3,10 +3,9 @@
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
-/.idea/markdown*
+/.idea/vcs.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 *.apk
-
