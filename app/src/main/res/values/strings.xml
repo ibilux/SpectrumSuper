@@ -38,6 +38,5 @@
     <!-- Shared Preferences -->
     <string name="profile" translatable="false" />
     <string name="profilePath" translatable="false" />
-    <string name="firstFind" translatable="false">true</string>
     <string name="loadOnBoot" translatable="false">false</string>
 </resources>

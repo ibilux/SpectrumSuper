@@ -44,16 +44,8 @@ public class ProfileLoaderActivity extends AppCompatActivity{
 
         CardView fileSelect = (CardView) findViewById(R.id.profCard);
         final Switch applyOnBoot = (Switch) findViewById(R.id.boot);
-        SharedPreferences first = this.getSharedPreferences("firstFind", Context.MODE_PRIVATE);
-        SharedPreferences.Editor feditor = first.edit();
         SharedPreferences boot = getApplication().getSharedPreferences("loadOnBoot", Context.MODE_PRIVATE);
-
-        if (first.getBoolean("firstFind", true)) {
-            aboutDialog();
-            feditor.putBoolean("firstFind", false);
-            feditor.apply();
-        }
-
+        aboutDialog();
         applyOnBoot.setChecked(boot.getBoolean("loadOnBoot", false));
 
         try {

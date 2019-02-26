@@ -234,10 +234,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        SharedPreferences first = this.getSharedPreferences("firstFind", Context.MODE_PRIVATE);
-        if (!first.getBoolean("firstFind", true)) {
-            getMenuInflater().inflate(R.menu.nav, menu);
-        }
+        getMenuInflater().inflate(R.menu.nav, menu);
         return true;
     }
 
