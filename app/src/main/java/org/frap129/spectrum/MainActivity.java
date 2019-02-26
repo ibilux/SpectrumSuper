@@ -198,15 +198,16 @@ public class MainActivity extends AppCompatActivity {
             suResult = Shell.SU.run(String.format("getprop %s", kernelProp));
         }
         kernel = listToString(suResult);
-        if (kernel.isEmpty())
+        if (kernel.isEmpty()) {
             return;
+        }
         balDesc = desc0.getText().toString();
         balDesc = balDesc.replaceAll("\\bElectron\\b", kernel);
         desc0.setText(balDesc);
 
         if (Utils.supportsCustomDesc()){
-            if(!Objects.equals(getCustomDesc("balance"), "fail")) desc0.setText(getCustomDesc("balance"));
-            if(!Objects.equals(getCustomDesc("performance"), "fail")) desc1.setText(getCustomDesc("performance"));
+            if(!Objects.equals(getCustomDesc("balance"), "fail")){desc0.setText(getCustomDesc("balance"));}
+            if(!Objects.equals(getCustomDesc("performance"), "fail")){desc1.setText(getCustomDesc("performance"));}
         }
     }
 
@@ -275,4 +276,3 @@ public class MainActivity extends AppCompatActivity {
     }
 
 }
-

@@ -8,7 +8,6 @@ import android.content.SharedPreferences;
 public class BootReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
-
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
             SharedPreferences boot = context.getSharedPreferences("loadOnBoot", Context.MODE_PRIVATE);
             if (boot.getBoolean("loadOnBoot", true)) {
@@ -16,12 +15,10 @@ public class BootReceiver extends BroadcastReceiver{
                 SharedPreferences profile = context.getSharedPreferences("profile", Context.MODE_PRIVATE);
                 String profilePath = path.getString("profilePath", null);
                 String curProfile = profile.getString("profile", "0");
-                if ((profilePath != null) && !(curProfile.contains("custom")))
+                if ((profilePath != null) && !(curProfile.contains("custom"))) {
                     ProfileLoaderActivity.setEXKMProfile(profilePath);
+                }
             }
         }
     }
-
-
-
 }
