@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
     private CardView oldCard;
     private List<String> suResult = null;
-    private int notaneasteregg = 0;
     private static final int PERMISSIONS_REQUEST = 0;
 
     @Override
@@ -55,8 +54,13 @@ public class MainActivity extends AppCompatActivity {
         // Define existing CardViews
         final CardView card0 = (CardView) findViewById(R.id.card0);
         final CardView card1 = (CardView) findViewById(R.id.card1);
+        final CardView card2 = (CardView) findViewById(R.id.card2);
+        final CardView card3 = (CardView) findViewById(R.id.card3);
+        final CardView card4 = (CardView) findViewById(R.id.card4);
         final int balColor = ContextCompat.getColor(this, R.color.colorBalance);
+        final int batColor = ContextCompat.getColor(this, R.color.colorBattery);
         final int perColor = ContextCompat.getColor(this, R.color.colorPerformance);
+        final int gamColor = ContextCompat.getColor(this, R.color.colorGaming);
 
         // Check for Spectrum Support
         if (!checkSupport(this)) {
@@ -102,11 +106,20 @@ public class MainActivity extends AppCompatActivity {
         String[] profilesToDisable = disabledProfiles.split(",");
         for (String profile : profilesToDisable){
             switch (profile) {
-                case "balance":
+                case "battery":
                     card0.setVisibility(View.GONE);
                     break;
-                case "performance":
+                case "superbattery":
                     card1.setVisibility(View.GONE);
+                    break;
+                case "balance":
+                    card2.setVisibility(View.GONE);
+                    break;
+                case "performance":
+                    card3.setVisibility(View.GONE);
+                    break;
+                case "gaming":
+                    card4.setVisibility(View.GONE);
                     break;
                 default:
                     break;
@@ -123,29 +136,37 @@ public class MainActivity extends AppCompatActivity {
         card0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            cardClick(card0, 0, balColor);
-                if (notaneasteregg == 1) {
-                    notaneasteregg++;
-                } else {
-                    notaneasteregg = 0;
-                }
+                cardClick(card0, 0, batColor);
             }
         });
-
+        
         card1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardClick(card1, 1, perColor);
-                if (notaneasteregg == 3) {
-                    Intent intent = new Intent(MainActivity.this, ProfileLoaderActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    notaneasteregg = 0;
-                }
+                cardClick(card1, 1, batColor);
             }
         });
-
+        
+        card2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardClick(card2, 2, balColor);
+            }
+        });
+        
+        card3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardClick(card3, 3, perColor);
+            }
+        });
+        
+        card4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cardClick(card4, 4, gamColor);
+            }
+        });
     }
 
     // Method that detects the selected profile on launch
@@ -166,17 +187,38 @@ public class MainActivity extends AppCompatActivity {
                 // Default KPM value, just in case
             } else if (result.contains("0")) {
                 CardView card0 = (CardView) findViewById(R.id.card0);
+                int batColor = ContextCompat.getColor(this, R.color.colorBattery);
+                card0.setCardBackgroundColor(batColor);
+                oldCard = card0;
+                editor.putString("profile", "battery");
+                editor.apply();
+            } else if (result.contains("1")) {
+                CardView card1 = (CardView) findViewById(R.id.card1);
+                int batColor = ContextCompat.getColor(this, R.color.colorBattery);
+                card1.setCardBackgroundColor(batColor);
+                oldCard = card1;
+                editor.putString("profile", "superbattery");
+                editor.apply();
+            } else if (result.contains("2")) {
+                CardView card0 = (CardView) findViewById(R.id.card0);
                 int balColor = ContextCompat.getColor(this, R.color.colorBalance);
                 card0.setCardBackgroundColor(balColor);
                 oldCard = card0;
                 editor.putString("profile", "balanced");
                 editor.apply();
-            } else if (result.contains("1")) {
-                CardView card1 = (CardView) findViewById(R.id.card1);
+            } else if (result.contains("3")) {
+                CardView card3 = (CardView) findViewById(R.id.card3);
                 int perColor = ContextCompat.getColor(this, R.color.colorPerformance);
-                card1.setCardBackgroundColor(perColor);
-                oldCard = card1;
+                card3.setCardBackgroundColor(perColor);
+                oldCard = card3;
                 editor.putString("profile", "performance");
+                editor.apply();
+            } else if (result.contains("4")) {
+                CardView card4 = (CardView) findViewById(R.id.card4);
+                int perColor = ContextCompat.getColor(this, R.color.colorGaming);
+                card4.setCardBackgroundColor(perColor);
+                oldCard = card4;
+                editor.putString("profile", "gaming");
                 editor.apply();
             } else {
                 editor.putString("profile", "custom");
