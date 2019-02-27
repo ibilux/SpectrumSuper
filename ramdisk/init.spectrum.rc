@@ -3,7 +3,7 @@
 # Implimentation inspired by Franco's fku profiles
 #############
 # Implimentation for Hermes (Xiaomi Redmi Note 2) by ibilux
-# CPU Examples: 403000, 806000, 1183000, 1326000, 1469000, 1625000, 1781000, 1950000, 2150000
+# CPU Examples: 403000, 806000, 1183000, 1326000, 1469000, 1625000, 1781000, 1950000
 # GPU Examples: 253500, 299000, 390000, 442000, 546000
 #############
 
@@ -53,10 +53,10 @@ on property:persist.spectrum.profile=0
 	write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 180000
 	write /sys/devices/system/cpu/cpufreq/interactive/boost 0
 	write /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration 0
-	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "38000 1280000:18000 1480000:98000"
+	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "38000 1183000:18000 1469000:98000"
 	write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1183000
 	write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 98
-	write /sys/devices/system/cpu/cpufreq/interactive/target_loads "80 403000:75 806000:85 1183000:90 1326000:95 1469000:98 1625000:99"
+	write /sys/devices/system/cpu/cpufreq/interactive/target_loads "80 403000:70 806000:80 1183000:90 1326000:95 1469000:98"
 	write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 18000
 
 ### Super Battery ###
@@ -81,15 +81,15 @@ on property:persist.spectrum.profile=1
 	write /proc/gpufreq/gpufreq_opp_max_freq 253500
 
 	# Configure governor settings for cluster
-	write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 20000
-	write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 180000
+	write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 25000
+	write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 40000
 	write /sys/devices/system/cpu/cpufreq/interactive/boost 0
 	write /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration 0
-	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "18000 1480000:98000"
-	write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1180000
-	write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 98
-	write /sys/devices/system/cpu/cpufreq/interactive/target_loads "80 780000:60 1180000:86 1280000:79 1480000:97"
-	write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 38000
+	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 5000
+	write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 403000
+	write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 99
+	write /sys/devices/system/cpu/cpufreq/interactive/target_loads 99
+	write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 10000
 
 ### Balance (hermes factory default profile) ###
 on property:persist.spectrum.profile=2
@@ -137,9 +137,9 @@ on property:persist.spectrum.profile=3
 
 	# Set CPU max freqs
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "ondemand"
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2150000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1950000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 403000
-    write /proc/cpufreq/cpufreq_limited_max_freq_by_user 2150000
+    write /proc/cpufreq/cpufreq_limited_max_freq_by_user 1950000
 
 	# Set GPU max freq
 	write /proc/gpufreq/gpufreq_opp_max_freq 442000
@@ -149,10 +149,10 @@ on property:persist.spectrum.profile=3
 	write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 40000
 	write /sys/devices/system/cpu/cpufreq/interactive/boost 0
 	write /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration 0
-	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "18000 1480000:98000"
-	write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 2150000
+	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "38000 1625000:98000"
+	write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1950000
 	write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 98
-	write /sys/devices/system/cpu/cpufreq/interactive/target_loads "80 780000:60 1180000:86 1280000:79 1480000:97"
+	write /sys/devices/system/cpu/cpufreq/interactive/target_loads "80 806000:60 1183000:65 1469000:75 1625000:80 1950000:98"
 	write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 38000
 
 ### Gaming (OverClock) ### 
@@ -169,9 +169,9 @@ on property:persist.spectrum.profile=4
     
 	# Set CPU max freqs
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "ondemand"
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2150000
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1950000
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 1183000
-    write /proc/cpufreq/cpufreq_limited_max_freq_by_user 2150000
+    write /proc/cpufreq/cpufreq_limited_max_freq_by_user 1950000
 
 	# Set GPU max freq
 	write /proc/gpufreq/gpufreq_opp_max_freq 546000
@@ -181,8 +181,8 @@ on property:persist.spectrum.profile=4
 	write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 180000
 	write /sys/devices/system/cpu/cpufreq/interactive/boost 0
 	write /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration 0
-	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "18000 1480000:98000"
-	write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 2150000
-	write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 98
-	write /sys/devices/system/cpu/cpufreq/interactive/target_loads "80 780000:60 1180000:86 1280000:79 1480000:97"
+	write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "38000 1625000:98000"
+	write /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq 1950000
+	write /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load 95
+	write /sys/devices/system/cpu/cpufreq/interactive/target_loads "80 1469000:60 1625000:75 1950000:90"
 	write /sys/devices/system/cpu/cpufreq/interactive/min_sample_time 38000
