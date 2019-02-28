@@ -30,13 +30,21 @@ public class ProfileTile extends TileService {
     }
 
     private void setProfile() {
-        MultiProcessSharedPreferencesProvider.MultiProcessSharedPreferences profile =
-                MultiProcessSharedPreferencesProvider.getSharedPreferences(ProfileTile.this, "profile");
+        MultiProcessSharedPreferencesProvider.MultiProcessSharedPreferences profile = MultiProcessSharedPreferencesProvider.getSharedPreferences(ProfileTile.this, "profile");
         SharedPreferences.Editor editor = profile.edit();
         boolean isActive = getServiceStatus();
 
         // Update tile and set profile
-        if (isActive && !click){
+        // Update tile and set profile
+        if (isActive && click) {
+            Utils.setProfile(3);
+            editor.putString("profile", "gaming");
+            editor.apply();
+        } else if (!isActive && click) {
+            Utils.setProfile(2);
+            editor.putString("profile", "battery");
+            editor.apply();
+        } else if (isActive && !click){
             Utils.setProfile(1);
             editor.putString("profile", "performance");
             editor.apply();
@@ -71,10 +79,23 @@ public class ProfileTile extends TileService {
         disabledProfilesList.addAll(Arrays.asList(Utils.disabledProfiles().split(",")));
 
         // Update tile
-        if (profile.contains("performance") && !disabledProfilesList.contains(profile)){
+        // Update tile
+        if (profile.contains("gaming") && !disabledProfilesList.contains(profile)) {
+            newLabel = "Gaming";
+            newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.game);
+            click = false;
+        } else if (profile.contains("battery") && !disabledProfilesList.contains(profile)) {
+            newLabel = "Battery";
+            newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.battery);
+            click = true;
+        } else if (profile.contains("superbattery") && !disabledProfilesList.contains(profile)) {
+            newLabel = "SuperBattery";
+            newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.thunder);
+            click = true;
+        } else if (profile.contains("performance") && !disabledProfilesList.contains(profile)){
             newLabel = "Performance";
             newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.rocket);
-            click = false;
+            click = true;
         } else if (profile.contains("balanced") && !disabledProfilesList.contains(profile)) {
             newLabel = "Balance";
             newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.atom);

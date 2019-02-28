@@ -200,10 +200,10 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("profile", "superbattery");
                 editor.apply();
             } else if (result.contains("2")) {
-                CardView card0 = (CardView) findViewById(R.id.card0);
+                CardView card2 = (CardView) findViewById(R.id.card2);
                 int balColor = ContextCompat.getColor(this, R.color.colorBalance);
-                card0.setCardBackgroundColor(balColor);
-                oldCard = card0;
+                card2.setCardBackgroundColor(balColor);
+                oldCard = card2;
                 editor.putString("profile", "balanced");
                 editor.apply();
             } else if (result.contains("3")) {
@@ -231,9 +231,11 @@ public class MainActivity extends AppCompatActivity {
     private void getDesc() {
         TextView desc0 = (TextView) findViewById(R.id.desc0);
         TextView desc1 = (TextView) findViewById(R.id.desc1);
+        TextView desc2 = (TextView) findViewById(R.id.desc2);
+        TextView desc3 = (TextView) findViewById(R.id.desc3);
+        TextView desc4 = (TextView) findViewById(R.id.desc4);
         String balDesc;
         String kernel;
-
         if(KPM){
             suResult = Shell.SU.run(String.format("cat %s", kpmPropPath));
         } else {
@@ -243,13 +245,17 @@ public class MainActivity extends AppCompatActivity {
         if (kernel.isEmpty()) {
             return;
         }
+        // Electron with the current kernel name
         balDesc = desc0.getText().toString();
         balDesc = balDesc.replaceAll("\\bElectron\\b", kernel);
         desc0.setText(balDesc);
-
+        // set custom descrition if found
         if (Utils.supportsCustomDesc()){
-            if(!Objects.equals(getCustomDesc("balance"), "fail")){desc0.setText(getCustomDesc("balance"));}
-            if(!Objects.equals(getCustomDesc("performance"), "fail")){desc1.setText(getCustomDesc("performance"));}
+            if(!Objects.equals(getCustomDesc("battery"), "fail")){desc0.setText(getCustomDesc("battery"));}
+            if(!Objects.equals(getCustomDesc("superbattery"), "fail")){desc1.setText(getCustomDesc("superbattery"));}
+            if(!Objects.equals(getCustomDesc("balance"), "fail")){desc2.setText(getCustomDesc("balance"));}
+            if(!Objects.equals(getCustomDesc("performance"), "fail")){desc3.setText(getCustomDesc("performance"));}
+            if(!Objects.equals(getCustomDesc("gaming"), "fail")){desc4.setText(getCustomDesc("gaming"));}
         }
     }
 
