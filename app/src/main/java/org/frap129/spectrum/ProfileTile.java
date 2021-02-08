@@ -6,11 +6,12 @@ import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-
-import com.ruesga.preferences.MultiProcessSharedPreferencesProvider;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import org.hq.spectrumsuper.R;
+
+import com.ruesga.preferences.MultiProcessSharedPreferencesProvider;
 
 @TargetApi(Build.VERSION_CODES.N)
 public class ProfileTile extends TileService {

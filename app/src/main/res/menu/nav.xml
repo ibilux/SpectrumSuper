@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context=".MainActivity">
 
     <group>
-        <item
-            android:id="@+id/custom_profile"
-            android:orderInCategory="1"
-            app:showAsAction="never"
-            android:title="@string/profileMenu"/>
+        <item android:id="@+id/custom_profile"
+              android:orderInCategory="1"
+              android:title="@string/profileMenu"
+              android:showAsAction="never"/>
+        <item android:id="@+id/action_about"
+              android:title="@string/aboutMenu"
+              android:orderInCategory="2"
+              android:showAsAction="never" />
     </group>
 
 </menu>
+

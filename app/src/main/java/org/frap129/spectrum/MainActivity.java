@@ -10,21 +10,21 @@ import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
+import android.app.Activity;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.List;
 import java.util.Objects;
 
 import eu.chainfire.libsuperuser.Shell;
+
+import org.hq.spectrumsuper.R;
 
 import static org.frap129.spectrum.Utils.KPM;
 import static org.frap129.spectrum.Utils.checkSupport;
@@ -40,7 +40,7 @@ import static org.frap129.spectrum.Utils.notTunedGov;
 import static org.frap129.spectrum.Utils.profileProp;
 import static org.frap129.spectrum.Utils.setProfile;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private CardView oldCard;
     private List<String> suResult = null;
@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         final CardView card3 = (CardView) findViewById(R.id.card3);
         final CardView card4 = (CardView) findViewById(R.id.card4);
         final int balColor = ContextCompat.getColor(this, R.color.colorBalance);
+        final int supColor = ContextCompat.getColor(this, R.color.colorSuperBattery);
         final int batColor = ContextCompat.getColor(this, R.color.colorBattery);
         final int perColor = ContextCompat.getColor(this, R.color.colorPerformance);
         final int gamColor = ContextCompat.getColor(this, R.color.colorGaming);
@@ -89,18 +90,16 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
-                            finish();
+                            // finish(); why does it have to exit?
                         }
                     })
                     .show();
             return;
         }
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED  && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
         }
-
 
         String disabledProfiles = Utils.disabledProfiles();
         String[] profilesToDisable = disabledProfiles.split(",");
@@ -143,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         card1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cardClick(card1, 1, batColor);
+                cardClick(card1, 1, supColor);
             }
         });
         
@@ -194,8 +193,8 @@ public class MainActivity extends AppCompatActivity {
                 editor.apply();
             } else if (result.contains("1")) {
                 CardView card1 = (CardView) findViewById(R.id.card1);
-                int batColor = ContextCompat.getColor(this, R.color.colorBattery);
-                card1.setCardBackgroundColor(batColor);
+                int supColor = ContextCompat.getColor(this, R.color.colorSuperBattery);
+                card1.setCardBackgroundColor(supColor);
                 oldCard = card1;
                 editor.putString("profile", "superbattery");
                 editor.apply();
@@ -290,8 +289,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
             case R.id.custom_profile:
-                Intent i = new Intent(this, ProfileLoaderActivity.class);
-                startActivity(i);
+                Intent profileLoader = new Intent(this, ProfileLoaderActivity.class);
+                startActivity(profileLoader);
+                return true;
+            case R.id.action_about:
+                Intent about = new Intent(this, AboutActivity.class);
+                startActivity(about);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -319,5 +322,4 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
 }

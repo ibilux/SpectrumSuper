@@ -31,12 +31,13 @@
     <string name="fileSelect">Select a File</string>
     <string name="bootText">Apply profile on boot</string>
     <string name="profileMenu">Profile loader</string>
+    <string name="aboutMenu">About</string>
 
     <!-- Profile Tile -->
     <string name="profileTile">Profile</string>
 
     <!-- Shared Preferences -->
-    <string name="profile" translatable="false" />
-    <string name="profilePath" translatable="false" />
+    <string name="profile" translatable="false"/>
+    <string name="profilePath" translatable="false"/>
     <string name="loadOnBoot" translatable="false">false</string>
 </resources>
