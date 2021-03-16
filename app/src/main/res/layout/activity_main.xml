@@ -30,7 +30,7 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin">
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:id="@+id/card0"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -63,9 +63,9 @@
                         android:text="@string/profdesc0"
                         android:textAppearance="@android:style/TextAppearance.Material.Small"
                         android:gravity="bottom"/>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:id="@+id/card1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -98,9 +98,9 @@
                         android:text="@string/profdesc1"
                         android:textAppearance="@android:style/TextAppearance.Material.Small"
                         android:gravity="bottom"/>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:id="@+id/card2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -133,9 +133,9 @@
                         android:text="@string/profdesc2"
                         android:textAppearance="@android:style/TextAppearance.Material.Small"
                         android:gravity="bottom"/>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                     android:id="@+id/card3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -168,8 +168,8 @@
                         android:text="@string/profdesc3"
                         android:textAppearance="@android:style/TextAppearance.Material.Small"
                         android:gravity="bottom"/>
-            </android.support.v7.widget.CardView>
-            <android.support.v7.widget.CardView
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
                     android:id="@+id/card4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -202,7 +202,7 @@
                         android:text="@string/profdesc4"
                         android:textAppearance="@android:style/TextAppearance.Material.Small"
                         android:gravity="bottom"/>
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>
