@@ -28,7 +28,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import eu.chainfire.libsuperuser.Shell;
 
-import org.hq.spectrumsuper.R;
+import com.hq.spectrumsuper.R;
 
 import static java.lang.System.in;
 

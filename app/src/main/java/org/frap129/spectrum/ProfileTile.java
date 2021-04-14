@@ -9,7 +9,7 @@ import android.service.quicksettings.TileService;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.hq.spectrumsuper.R;
+import com.hq.spectrumsuper.R;
 
 import com.ruesga.preferences.MultiProcessSharedPreferencesProvider;
 
