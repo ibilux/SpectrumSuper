@@ -1,6 +1,7 @@
 package org.frap129.spectrum;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.os.Environment;
 
 import java.io.BufferedReader;
@@ -33,11 +34,14 @@ class Utils {
 
     public static Boolean KPM;
 
-    public static String notTunedGov = listToString(Shell.SU.run(String.format("cat %s", kpmNotTuned)));
+    public static String notTunedGov = listToString(shellSU(String.format("cat %s", kpmNotTuned)));
 
     public static String finalGov;
 
     public static String cpuScalingGovernorPath = "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
+
+    public static boolean FLAG_SYSTEM = false;
+    public static boolean FLAG_SU = false;
 
     // Method to check if kernel supports
     public static boolean checkSupport(final Context context) {
@@ -45,11 +49,11 @@ class Utils {
         String supportProp = "spectrum.support";
         shResult = Shell.SH.run(String.format("getprop %s", supportProp));
         if(listToString(shResult).isEmpty()){
-            shResult = Shell.SU.run(String.format("cat %s", kpmSupport));
+            shResult = shellSU(String.format("cat %s", kpmSupport));
             KPM = true;
 
             List<String> anyDisabledProfile;
-            anyDisabledProfile = Shell.SU.run(String.format("cat %s", kpmDisabledProfilesPath));
+            anyDisabledProfile = shellSU(String.format("cat %s", kpmDisabledProfilesPath));
             if(!listToString(anyDisabledProfile).isEmpty()){
                 kpmDisabledProfiles = listToString(anyDisabledProfile);
             }
@@ -64,7 +68,33 @@ class Utils {
 
     // Method to check if the device is rooted
     public static boolean checkSU() {
-        return Shell.SU.available();
+        return FLAG_SU = Shell.SU.available();
+    }
+
+    // Method to check if running as system app
+    public static boolean checkSystemApp(final Context mContext) {
+        return FLAG_SYSTEM = (mContext.getApplicationInfo().flags
+                & (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) != 0;
+    }
+
+    // Method to check if the device is rooted
+    public static List<String> shellSU(String command) {
+        if(FLAG_SU)
+            return Shell.SU.run(command);
+        else
+            return Shell.SH.run(command);
+    }
+    public static List<String> shellSU(List<String> commands) {
+        if(FLAG_SU)
+            return Shell.SU.run(commands);
+        else
+            return Shell.SH.run(commands);
+    }
+    public static List<String> shellSU(String[] commands) {
+        if(FLAG_SU)
+            return Shell.SU.run(commands);
+        else
+            return Shell.SH.run(commands);
     }
 
     // Method that converts List<String> to String
@@ -96,9 +126,9 @@ class Utils {
             @Override
             public void run() {
                 if(KPM) {
-                    Shell.SU.run(String.format("echo %s > %s", profile, kpmPath));
+                    shellSU(String.format("echo %s > %s", profile, kpmPath));
                 } else {
-                    Shell.SU.run(String.format("setprop %s %s", profileProp, profile));
+                    shellSU(String.format("setprop %s %s", profileProp, profile));
                 }
             }
         }).start();

@@ -40,6 +40,7 @@ import static org.frap129.spectrum.Utils.listToString;
 import static org.frap129.spectrum.Utils.notTunedGov;
 import static org.frap129.spectrum.Utils.profileProp;
 import static org.frap129.spectrum.Utils.setProfile;
+import static org.frap129.spectrum.Utils.shellSU;
 
 public class MainActivity extends Activity {
 
@@ -64,8 +65,8 @@ public class MainActivity extends Activity {
         final int perColor = ContextCompat.getColor(this, R.color.colorPerformance);
         final int gamColor = ContextCompat.getColor(this, R.color.colorGaming);
 
-        // Ensure root access
-        if (!Utils.checkSU()) {
+        // Ensure root access or system app privilege
+        if (!Utils.checkSU() && !Utils.checkSystemApp(this)) {
             new AlertDialog.Builder(this)
                     .setTitle(getString(R.string.no_root_detected_dialog_title))
                     .setMessage(getString(R.string.no_root_detected_dialog_message))
@@ -175,9 +176,9 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor editor = profile.edit();
 
         if(KPM) {
-            suResult = Shell.SU.run(String.format("cat %s", kpmPath));
+            suResult = shellSU(String.format("cat %s", kpmPath));
         } else {
-            suResult = Shell.SU.run(String.format("getprop %s", profileProp));
+            suResult = shellSU(String.format("getprop %s", profileProp));
         }
 
         if (suResult != null) {
@@ -237,9 +238,9 @@ public class MainActivity extends Activity {
         String balDesc;
         String kernel;
         if(KPM){
-            suResult = Shell.SU.run(String.format("cat %s", kpmPropPath));
+            suResult = shellSU(String.format("cat %s", kpmPropPath));
         } else {
-            suResult = Shell.SU.run(String.format("getprop %s", kernelProp));
+            suResult = shellSU(String.format("getprop %s", kernelProp));
         }
         kernel = listToString(suResult);
         if (kernel.isEmpty()) {
@@ -268,9 +269,9 @@ public class MainActivity extends Activity {
                 oldCard.setCardBackgroundColor(ogColor);
             setProfile(prof);
             if (KPM) {
-                Shell.SU.run(String.format("echo %s > %s", notTunedGov, cpuScalingGovernorPath));
-                finalGov = listToString(Shell.SU.run(String.format("cat %s", kpmFinal)));
-                Shell.SU.run(String.format("echo %s > %s", finalGov, cpuScalingGovernorPath));
+                shellSU(String.format("echo %s > %s", notTunedGov, cpuScalingGovernorPath));
+                finalGov = listToString(shellSU(String.format("cat %s", kpmFinal)));
+                shellSU(String.format("echo %s > %s", finalGov, cpuScalingGovernorPath));
             }
             oldCard = card;
             SharedPreferences profile = this.getSharedPreferences("profile", Context.MODE_PRIVATE);

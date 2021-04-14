@@ -26,7 +26,7 @@ import java.io.InputStreamReader;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import eu.chainfire.libsuperuser.Shell;
+import static org.frap129.spectrum.Utils.shellSU;
 
 import com.hq.spectrumsuper.R;
 
@@ -98,7 +98,7 @@ public class ProfileLoaderActivity extends Activity{
                         exec = exec + " write " + strLine + ";";
                     }
 
-                    Shell.SU.run(exec);
+                    shellSU(exec);
 
                     br.close();
                     in.close();
@@ -131,7 +131,7 @@ public class ProfileLoaderActivity extends Activity{
         new AsyncTask<Object, Object, Void>() {
             @Override
             protected Void doInBackground(Object... params) {
-                Shell.SU.run("setprop persist.spectrum.profile " + profile);
+                shellSU("setprop persist.spectrum.profile " + profile);
                 return null;
             }
         }.execute();
