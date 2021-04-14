@@ -64,11 +64,11 @@ public class MainActivity extends Activity {
         final int perColor = ContextCompat.getColor(this, R.color.colorPerformance);
         final int gamColor = ContextCompat.getColor(this, R.color.colorGaming);
 
-        // Check for Spectrum Support
-        if (!checkSupport(this)) {
+        // Ensure root access
+        if (!Utils.checkSU()) {
             new AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.no_spectrum_support_dialog_title))
-                    .setMessage(getString(R.string.no_spectrum_support_dialog_message))
+                    .setTitle(getString(R.string.no_root_detected_dialog_title))
+                    .setMessage(getString(R.string.no_root_detected_dialog_message))
                     .setCancelable(false)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
@@ -81,11 +81,11 @@ public class MainActivity extends Activity {
             return;
         }
 
-        // Ensure root access
-        if (!Utils.checkSU()) {
+        // Check for Spectrum Support
+        if (!checkSupport(this)) {
             new AlertDialog.Builder(this)
-                    .setTitle(getString(R.string.no_root_detected_dialog_title))
-                    .setMessage(getString(R.string.no_root_detected_dialog_message))
+                    .setTitle(getString(R.string.no_spectrum_support_dialog_title))
+                    .setMessage(getString(R.string.no_spectrum_support_dialog_message))
                     .setCancelable(false)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
