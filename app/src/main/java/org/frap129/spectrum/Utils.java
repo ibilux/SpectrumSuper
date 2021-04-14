@@ -70,8 +70,10 @@ class Utils {
     // Method that converts List<String> to String
     public static String listToString(List<String> list) {
         StringBuilder Builder = new StringBuilder();
-        for(String out : list){
-            Builder.append(out);
+        if (list != null){
+            for(String out : list){
+                Builder.append(out);
+            }
         }
         return Builder.toString();
     }
