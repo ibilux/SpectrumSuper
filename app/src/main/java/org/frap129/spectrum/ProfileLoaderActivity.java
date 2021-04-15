@@ -1,6 +1,7 @@
 package org.frap129.spectrum;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.*;
@@ -13,24 +14,22 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.app.Activity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import com.hq.spectrumsuper.R;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import static org.frap129.spectrum.Utils.shellSU;
-
-import com.hq.spectrumsuper.R;
-
 import static java.lang.System.in;
+import static org.frap129.spectrum.Utils.shellSU;
 
 public class ProfileLoaderActivity extends Activity{
     private static final int SELECT_FILE = 1;
@@ -40,8 +39,8 @@ public class ProfileLoaderActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_loader);
 
-        CardView fileSelect = (CardView) findViewById(R.id.profCard);
-        final Switch applyOnBoot = (Switch) findViewById(R.id.boot);
+        CardView fileSelect = findViewById(R.id.profCard);
+        final Switch applyOnBoot = findViewById(R.id.boot);
         SharedPreferences boot = getApplication().getSharedPreferences("loadOnBoot", Context.MODE_PRIVATE);
         aboutDialog();
         applyOnBoot.setChecked(boot.getBoolean("loadOnBoot", false));
@@ -71,13 +70,8 @@ public class ProfileLoaderActivity extends Activity{
                 SharedPreferences prefs = getApplication().getSharedPreferences("loadOnBoot", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
 
-                if (applyOnBoot.isChecked()) {
-                    editor.putBoolean("loadOnBoot", true);
-                    editor.apply();
-                } else {
-                    editor.putBoolean("loadOnBoot", false);
-                    editor.apply();
-                }
+                editor.putBoolean("loadOnBoot", applyOnBoot.isChecked());
+                editor.apply();
             }
         });
     }
@@ -92,13 +86,13 @@ public class ProfileLoaderActivity extends Activity{
                     BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
 
                     String strLine;
-                    String exec = "write() { echo -n $2 > $1; };";
+                    StringBuilder exec = new StringBuilder("write() { echo -n $2 > $1; };");
 
                     while ((strLine = br.readLine()) != null) {
-                        exec = exec + " write " + strLine + ";";
+                        exec.append(" write ").append(strLine).append(";");
                     }
 
-                    shellSU(exec);
+                    shellSU(exec.toString());
 
                     br.close();
                     in.close();
@@ -127,7 +121,7 @@ public class ProfileLoaderActivity extends Activity{
     }
 
     // Method that sets property as a string
-    private void setProp(final String profile) {
+    private static void setProp(final String profile) {
         new AsyncTask<Object, Object, Void>() {
             @Override
             protected Void doInBackground(Object... params) {
@@ -142,14 +136,14 @@ public class ProfileLoaderActivity extends Activity{
         final Dialog pDialog = new Dialog(ProfileLoaderActivity.this);
         pDialog.setTitle("Profile Loader");
         pDialog.setContentView(R.layout.profile_dialog);
-        Button pDialogCancel = (Button) pDialog.findViewById(R.id.pDialogCancel);
+        Button pDialogCancel = pDialog.findViewById(R.id.pDialogCancel);
         pDialogCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pDialog.dismiss();
             }
         });
-        Button pDialogConfirm = (Button) pDialog.findViewById(R.id.pDialogConfirm);
+        Button pDialogConfirm = pDialog.findViewById(R.id.pDialogConfirm);
         pDialogConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -188,7 +182,7 @@ public class ProfileLoaderActivity extends Activity{
 
                 final String id = DocumentsContract.getDocumentId(uri);
                 final Uri contentUri = ContentUris.withAppendedId(
-                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+                        Uri.parse("content://downloads/public_downloads"), Long.parseLong(id));
 
                 return getDataColumn(context, contentUri, null, null);
             }
@@ -260,20 +254,13 @@ public class ProfileLoaderActivity extends Activity{
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length <= 0
-                        && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    Toast.makeText(ProfileLoaderActivity.this, "Read permissions are required to run this app.", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(ProfileLoaderActivity.this, "Read permissions granted!", Toast.LENGTH_SHORT).show();
-                }
-                break;
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE) {// If request is cancelled, the result arrays are empty.
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(ProfileLoaderActivity.this, "Read permissions granted!", Toast.LENGTH_SHORT).show();
+            } else {
+                // permission denied, boo! Disable the functionality that depends on this permission.
+                Toast.makeText(ProfileLoaderActivity.this, "Read permissions are required to run this app.", Toast.LENGTH_LONG).show();
             }
         }
     }

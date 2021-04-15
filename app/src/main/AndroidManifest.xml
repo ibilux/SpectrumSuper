@@ -20,8 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="org.frap129.spectrum.ProfileLoaderActivity" android:screenOrientation="portrait" />
-        <activity android:name="org.frap129.spectrum.AboutActivity" android:screenOrientation="portrait" />
+        <activity android:name="org.frap129.spectrum.ProfileLoaderActivity"/>
+        <activity android:name="org.frap129.spectrum.AboutActivity"/>
         <receiver android:name="org.frap129.spectrum.BootReceiver" android:enabled="true" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -38,9 +38,6 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE"/>
             </intent-filter>
         </service>
-        <provider android:name="com.ruesga.preferences.MultiProcessSharedPreferencesProvider"
-                  android:authorities="com.android.providers"
-                  android:exported="false"/>
     </application>
 
 </manifest>

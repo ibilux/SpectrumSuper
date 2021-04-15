@@ -15,7 +15,7 @@ public class BootReceiver extends BroadcastReceiver{
                 SharedPreferences profile = context.getSharedPreferences("profile", Context.MODE_PRIVATE);
                 String profilePath = path.getString("profilePath", null);
                 String curProfile = profile.getString("profile", "0");
-                if ((profilePath != null) && !(curProfile.contains("custom"))) {
+                if ((profilePath != null) && (curProfile != null) && !(curProfile.contains("custom"))) {
                     ProfileLoaderActivity.setEXKMProfile(profilePath);
                 }
             }

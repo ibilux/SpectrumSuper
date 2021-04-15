@@ -3,6 +3,7 @@ package org.frap129.spectrum;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.os.Environment;
+import eu.chainfire.libsuperuser.Shell;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,19 +11,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-import eu.chainfire.libsuperuser.Shell;
-
 class Utils {
 
-    private static String kpmSupport = "/proc/kpm_supported";
+    private static final String kpmSupport = "/proc/kpm_supported";
 
-    public static String kpmPath = "/sys/module/profiles_manager/parameters/kpm_profile";
+    public static final String kpmPath = "/sys/module/profiles_manager/parameters/kpm_profile";
 
-    private static String kpmDisabledProfilesPath = "/proc/kpm_disabled_profiles";
+    private static final  String kpmDisabledProfilesPath = "/proc/kpm_disabled_profiles";
 
     private static String kpmDisabledProfiles = null;
 
-    private static String kpmNotTuned = "/proc/kpm_not_tuned";
+    private static final String kpmNotTuned = "/proc/kpm_not_tuned";
 
     public static String  kpmFinal = "/proc/kpm_final";
 
@@ -32,7 +31,7 @@ class Utils {
 
     public static String kpmPropPath = "/proc/kpm_name";
 
-    public static Boolean KPM;
+    public static boolean KPM = false;
 
     public static String notTunedGov = listToString(shellSU(String.format("cat %s", kpmNotTuned)));
 
@@ -44,7 +43,7 @@ class Utils {
     public static boolean FLAG_SU = false;
 
     // Method to check if kernel supports
-    public static boolean checkSupport(final Context context) {
+    public static boolean checkSupport() {
         List<String> shResult;
         String supportProp = "spectrum.support";
         shResult = Shell.SH.run(String.format("getprop %s", supportProp));
@@ -77,7 +76,7 @@ class Utils {
                 & (ApplicationInfo.FLAG_SYSTEM | ApplicationInfo.FLAG_UPDATED_SYSTEM_APP)) != 0;
     }
 
-    // Method to check if the device is rooted
+    // Method to runs command as root (if available) or as system
     public static List<String> shellSU(String command) {
         if(FLAG_SU)
             return Shell.SU.run(command);
@@ -110,18 +109,54 @@ class Utils {
 
     // Method that interprets a profile and sets it
     public static void setProfile(int profile) {
-        int numProfiles = 4;
-        if (profile > numProfiles) {
-            setProp(numProfiles);
-        } else if (profile < 0) {
-            setProp(0);
+        // ensure range of profiles between -1 and 5 (for 5 profiles and custom:0 and disabled:-1)
+        setProfileProp(Math.min(Math.max(profile, -1), 5));
+    }
+
+    // Method that gets profile property
+    public static int getProfile() {
+        List<String> suResult;
+        if(KPM) {
+            suResult = shellSU(String.format("cat %s", kpmPath));
         } else {
-            setProp(profile);
+            suResult = shellSU(String.format("getprop %s", profileProp));
+        }
+        if (suResult != null) {
+            String result = listToString(suResult);
+            for (int profileID = -1; profileID <= 5; profileID++) {
+                if (result.contains(String.valueOf(profileID))) {
+                    return profileID;
+                }
+            }
+            //return Integer.parseInt(profile);
+        }
+        return -1;
+    }
+
+    // Method that gets profile name
+    public static String getProfileName(int profileID) {
+        switch (profileID) {
+            case -1:
+                return "disabled";
+            case 0:
+                return "custom";
+            case 1:
+                return "battery";
+            case 2:
+                return "superbattery";
+            case 3:
+                return "balanced";
+            case 4:
+                return "performance";
+            case 5:
+                return "gaming";
+            default:
+                return "";
         }
     }
 
     // Method that sets system property
-    private static void setProp(final int profile) {
+    private static void setProfileProp(final int profile) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -144,22 +179,15 @@ class Utils {
 
     private static String readString(File file, String profileName) {
         String returnValue = null;
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(file), 512);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file), 512)) {
             returnValue = reader.readLine();
-            while ( returnValue != null && !returnValue.contains(profileName)){
+            while (returnValue != null && !returnValue.contains(profileName)) {
                 returnValue = reader.readLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (reader != null) reader.close();
-            } catch (IOException e) {
-                // Ignored, not much we can do anyway
-            }
         }
+        // Ignored, not much we can do anyway
         return returnValue;
     }
 

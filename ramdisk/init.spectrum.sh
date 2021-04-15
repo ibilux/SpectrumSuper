@@ -2,7 +2,12 @@
 # SPECTRUM KERNEL MANAGER
 # Profile initialization script by nathanchance
 
+SpectrumProfile=`getprop persist.spectrum.profile`
+
 # If there is not a persist value, we need to set one
-if [ ! -f /data/property/persist.spectrum.profile ]; then
-    setprop persist.spectrum.profile 2
+if [ -z "$SpectrumProfile" ]; then
+    setprop persist.spectrum.profile 3
+else
+    # Apply profile
+    setprop persist.spectrum.profile $SpectrumProfile
 fi
