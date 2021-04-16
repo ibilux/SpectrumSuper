@@ -49,7 +49,7 @@ on property:persist.spectrum.profile=-1
     write /proc/cpufreq/cpufreq_limited_max_freq_by_user 2150000
 
     # Set GPU max freq
-    write /proc/gpufreq/gpufreq_opp_max_freq 442000
+    write /proc/gpufreq/gpufreq_opp_max_freq 0
 
     # Configure governor settings for cluster
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 20000
@@ -87,7 +87,7 @@ on property:persist.spectrum.profile=1
     write /proc/cpufreq/cpufreq_limited_max_freq_by_user 1183000
 
     # Set GPU max freq
-    write /proc/gpufreq/gpufreq_opp_max_freq 442000
+    write /proc/gpufreq/gpufreq_opp_max_freq 0
 
     # Configure governor settings for cluster
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay "38000 1183000:18000 1469000:98000"
@@ -164,7 +164,7 @@ on property:persist.spectrum.profile=3
     write /proc/cpufreq/cpufreq_limited_max_freq_by_user 2150000
 
     # Set GPU max freq
-    write /proc/gpufreq/gpufreq_opp_max_freq 442000
+    write /proc/gpufreq/gpufreq_opp_max_freq 0
 
     # Configure governor settings for cluster
     write /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay 20000
@@ -202,7 +202,7 @@ on property:persist.spectrum.profile=4
     write /proc/cpufreq/cpufreq_limited_max_freq_by_user 2150000
 
     # Set GPU max freq
-    write /proc/gpufreq/gpufreq_opp_max_freq 442000
+    write /proc/gpufreq/gpufreq_opp_max_freq 0
 
     # Configure governor settings for cluster
 
