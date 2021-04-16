@@ -56,61 +56,62 @@ public class ProfileTile extends TileService {
         Utils.setProfile(profileID);
 
         // Update tile
-        updateTile();
+        updateTile(profileID);
     }
 
     private void updateTile() {
-        Tile tile = this.getQsTile();
-        Icon newIcon;
-        String newLabel;
-        int newState;
-
-        // get current profile number
-        int profileID = Utils.getProfile();
-
+        // get current profile number and update tile
+        updateTile(Utils.getProfile());
+    }
+    
+    private void updateTile(final int profileID) {
+        Tile mTile = getQsTile();
+        String mLabel;
+        Icon mIcon;
+        int mState;
         // Update tile
         switch (profileID) {
             case 1:
-                newLabel = getString(R.string.prof1);
-                newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.battery);
-                newState = Tile.STATE_ACTIVE;
+                mLabel = getString(R.string.prof1);
+                mIcon = Icon.createWithResource(getApplicationContext(), R.drawable.battery);
+                mState = Tile.STATE_ACTIVE;
                 break;
             case 2:
-                newLabel = getString(R.string.prof2);
-                newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.thunder);
-                newState = Tile.STATE_ACTIVE;
+                mLabel = getString(R.string.prof2);
+                mIcon = Icon.createWithResource(getApplicationContext(), R.drawable.thunder);
+                mState = Tile.STATE_ACTIVE;
                 break;
             case 3:
-                newLabel = getString(R.string.prof3);
-                newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.atom);
-                newState = Tile.STATE_ACTIVE;
+                mLabel = getString(R.string.prof3);
+                mIcon = Icon.createWithResource(getApplicationContext(), R.drawable.atom);
+                mState = Tile.STATE_ACTIVE;
                 break;
             case 4:
-                newLabel = getString(R.string.prof4);
-                newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.rocket);
-                newState = Tile.STATE_ACTIVE;
+                mLabel = getString(R.string.prof4);
+                mIcon = Icon.createWithResource(getApplicationContext(), R.drawable.rocket);
+                mState = Tile.STATE_ACTIVE;
                 break;
             case 5:
-                newLabel = getString(R.string.prof5);
-                newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.game);
-                newState = Tile.STATE_ACTIVE;
+                mLabel = getString(R.string.prof5);
+                mIcon = Icon.createWithResource(getApplicationContext(), R.drawable.game);
+                mState = Tile.STATE_ACTIVE;
                 break;
             case 0:
-                newLabel = getString(R.string.prof0);
-                newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_mono);
-                newState = Tile.STATE_ACTIVE;
+                mLabel = getString(R.string.prof0);
+                mIcon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_mono);
+                mState = Tile.STATE_ACTIVE;
                 break;
             default:
-                newLabel = getString(R.string.app_name);
-                newIcon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_mono);
-                newState = Tile.STATE_INACTIVE;
+                mLabel = getString(R.string.app_name);
+                mIcon = Icon.createWithResource(getApplicationContext(), R.drawable.ic_mono);
+                mState = Tile.STATE_INACTIVE;
                 break;
         }
 
         // Change the UI of the tile.
-        tile.setLabel(newLabel);
-        tile.setIcon(newIcon);
-        tile.setState(newState);
-        tile.updateTile();
+        mTile.setLabel(mLabel);
+        mTile.setIcon(mIcon);
+        mTile.setState(mState);
+        mTile.updateTile();
     }
 }
